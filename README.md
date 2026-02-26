@@ -57,41 +57,6 @@ For production migrations:
 PROJECT_ID=my-project INSTANCE_ID=my-instance DATABASE_ID=my-db make migrate
 ```
 
-## Usage
-
-```go
-import (
-    "context"
-    "cloud.google.com/go/spanner"
-    "github.com/wuyiadepoju/subscription-management/internal/app/subscription/domain"
-    "github.com/wuyiadepoju/subscription-management/internal/app/subscription/usecases/create_subscription"
-    "github.com/wuyiadepoju/subscription-management/internal/app/subscription/usecases/cancel_subscription"
-    "github.com/wuyiadepoju/subscription-management/internal/app/subscription/repo"
-    "github.com/wuyiadepoju/subscription-management/internal/app/subscription/adapters"
-)
-
-// Initialize (emulator example)
-os.Setenv("SPANNER_EMULATOR_HOST", "localhost:9010")
-client, _ := spanner.NewClient(ctx, "projects/test-project/instances/test-instance/databases/test-db",
-    option.WithEndpoint("http://localhost:9010"))
-
-repo := repo.NewSubscriptionRepo(client)
-billingClient := adapters.NewHTTPBillingClient(http.DefaultClient, "https://api.billing.com")
-clock := domain.RealClock{}
-
-// Create subscription
-createInteractor := create_subscription.NewInteractor(repo, billingClient, clock)
-sub, event, err := createInteractor.Execute(ctx, create_subscription.Request{
-    CustomerID: "cust-123",
-    PlanID:     "plan-premium",
-    PriceCents: 3000, // $30.00
-})
-
-// Cancel subscription
-cancelInteractor := cancel_subscription.NewInteractor(repo, billingClient, clock, 30)
-event, err := cancelInteractor.Execute(ctx, "sub-123")
-```
-
 ## Testing
 
 ```bash
