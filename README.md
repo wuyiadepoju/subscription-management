@@ -1,6 +1,6 @@
 # Subscription Management Service
 
-A clean architecture implementation of a subscription management service following Domain-Driven Design (DDD) principles.
+A subscription management service built with clean architecture and DDD principles.
 
 ## Project Structure
 
@@ -15,7 +15,7 @@ internal/app/subscription/
 
 ## Architecture
 
-Clean Architecture with DDD principles:
+Clean Architecture with DDD:
 
 - **Domain Layer**: Pure business logic, no infrastructure dependencies
 - **Contracts**: Interfaces defining layer boundaries
@@ -52,12 +52,10 @@ export SPANNER_EMULATOR_HOST=localhost:9010
 make migrate
 ```
 
-**Production migrations:**
+For production migrations:
 ```bash
 PROJECT_ID=my-project INSTANCE_ID=my-instance DATABASE_ID=my-db make migrate
 ```
-
-**Note:** Spanner uses `STRING` (not `VARCHAR`), `INT64` (not `BIGINT`), and `TIMESTAMP` for date/time. See `migrations/README.md` for details.
 
 ## Usage
 
@@ -101,11 +99,11 @@ event, err := cancelInteractor.Execute(ctx, "sub-123")
 make test-e2e
 ```
 
-**E2E Tests:** Full flow using Spanner emulator. Covers create/cancel flow, refund calculations, error cases, and database persistence. Located in `e2e/e2e_test.go`.
+E2E tests use the Spanner emulator and cover create/cancel flows, refund calculations, error cases, and database persistence. See `e2e/e2e_test.go`.
 
 ## Documentation
 
-- `REVIEW.md` - Analysis of issues in original implementation
+- `REVIEW.md` - Issues found in the original implementation
 - `ANSWERS.md` - Architectural Q&A (refund API placement, error handling, time/money calculations, testing)
 
 ## Key Features
