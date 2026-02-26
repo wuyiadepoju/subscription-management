@@ -400,7 +400,7 @@ func TestE2E_CreateAndCancelSubscription(t *testing.T) {
 		// Query database to get subscription ID
 		stmt := spanner.Statement{
 			SQL:    `SELECT id FROM subscriptions WHERE customer_id = @customer_id LIMIT 1`,
-			Params: map[string]interface{}{"customer_id": customerID},
+			Params: map[string]any{"customer_id": customerID},
 		}
 		iter := ts.spannerClient.Single().Query(ts.ctx, stmt)
 		defer iter.Stop()
@@ -636,7 +636,7 @@ func TestE2E_CreateSubscription_InvalidCustomer(t *testing.T) {
 	// Verify no subscription was created
 	stmt := spanner.Statement{
 		SQL:    `SELECT COUNT(*) as count FROM subscriptions WHERE customer_id = @customer_id`,
-		Params: map[string]interface{}{"customer_id": "invalid-customer"},
+		Params: map[string]any{"customer_id": "invalid-customer"},
 	}
 	iter := ts.spannerClient.Single().Query(ts.ctx, stmt)
 	defer iter.Stop()

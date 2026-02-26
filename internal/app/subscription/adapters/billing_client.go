@@ -66,7 +66,7 @@ func (c *HTTPBillingClient) ValidateCustomer(ctx context.Context, customerID str
 func (c *HTTPBillingClient) ProcessRefund(ctx context.Context, amount int64) error {
 	url := fmt.Sprintf("%s/refund", c.baseURL)
 
-	payload := map[string]interface{}{
+	payload := map[string]any{
 		"amount": amount,
 	}
 

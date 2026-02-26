@@ -27,7 +27,7 @@ func NewSubscriptionRepo(client *spanner.Client) *SubscriptionRepo {
 func (r *SubscriptionRepo) Save(ctx context.Context, sub *domain.Subscription) (*spanner.Mutation, error) {
 	mutation := spanner.InsertOrUpdate("subscriptions",
 		[]string{"id", "customer_id", "plan_id", "price_cents", "status", "start_date"},
-		[]interface{}{
+		[]any{
 			sub.ID(),
 			sub.CustomerID(),
 			sub.PlanID(),
@@ -53,7 +53,7 @@ func (r *SubscriptionRepo) FindByID(ctx context.Context, id string) (*domain.Sub
 			FROM subscriptions
 			WHERE id = @id
 		`,
-		Params: map[string]interface{}{
+		Params: map[string]any{
 			"id": id,
 		},
 	}
